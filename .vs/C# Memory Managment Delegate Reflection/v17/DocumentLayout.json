@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\User\\Desktop\\C# Memory Managment Delegate Reflection\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{CB3A248F-55DF-46B6-B90A-B1BA944AD2CD}|C# Memory Managment Delegate Reflection\\C# Memory Managment Delegate Reflection.csproj|c:\\users\\user\\desktop\\c# memory managment delegate reflection\\c# memory managment delegate reflection\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CB3A248F-55DF-46B6-B90A-B1BA944AD2CD}|C# Memory Managment Delegate Reflection\\C# Memory Managment Delegate Reflection.csproj|solutionrelative:c# memory managment delegate reflection\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\C# Memory Managment Delegate Reflection\\C# Memory Managment Delegate Reflection\\Program.cs",
+              "RelativeDocumentMoniker": "C# Memory Managment Delegate Reflection\\Program.cs",
+              "ToolTip": "C:\\Users\\User\\Desktop\\C# Memory Managment Delegate Reflection\\C# Memory Managment Delegate Reflection\\Program.cs",
+              "RelativeToolTip": "C# Memory Managment Delegate Reflection\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-01T13:08:08.868Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
