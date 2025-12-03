@@ -8,4 +8,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Include="Data\Products.json" />
+    <Compile Include="Data\Users.json" />
+  </ItemGroup>
+
 </Project>
