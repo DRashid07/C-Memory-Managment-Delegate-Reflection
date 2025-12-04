@@ -36,7 +36,7 @@
               "RelativeDocumentMoniker": "C# Memory Managment Delegate Reflection\\Models\\User.cs",
               "ToolTip": "C:\\Users\\User\\Desktop\\C# Memory Managment Delegate Reflection\\C# Memory Managment Delegate Reflection\\Models\\User.cs",
               "RelativeToolTip": "C# Memory Managment Delegate Reflection\\Models\\User.cs",
-              "ViewState": "AgIAAAkAAAAAAAAAAAA1wB0AAABdAAAAAAAAAA==",
+              "ViewState": "AgIAACEAAAAAAAAAAAAQwC0AAAA9AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-12-03T19:24:52.535Z",
               "EditorCaption": ""
@@ -51,8 +51,7 @@
               "RelativeToolTip": "C# Memory Managment Delegate Reflection\\Data\\Users.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-12-03T19:22:52.144Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-03T19:22:52.144Z"
             },
             {
               "$type": "Document",
@@ -64,8 +63,7 @@
               "RelativeToolTip": "C# Memory Managment Delegate Reflection\\Data\\Products.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-12-03T19:22:43.759Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-03T19:22:43.759Z"
             },
             {
               "$type": "Document",
@@ -77,8 +75,7 @@
               "RelativeToolTip": "C# Memory Managment Delegate Reflection\\Program.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-01T13:08:08.868Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-01T13:08:08.868Z"
             }
           ]
         }
