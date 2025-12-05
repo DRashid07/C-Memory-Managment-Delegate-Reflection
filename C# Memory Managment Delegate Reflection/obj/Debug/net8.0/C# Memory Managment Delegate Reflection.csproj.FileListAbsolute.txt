@@ -1,0 +1,15 @@
+C:\Users\User\Desktop\C# Memory Managment Delegate Reflection\C# Memory Managment Delegate Reflection\bin\Debug\net8.0\C# Memory Managment Delegate Reflection.exe
+C:\Users\User\Desktop\C# Memory Managment Delegate Reflection\C# Memory Managment Delegate Reflection\bin\Debug\net8.0\C# Memory Managment Delegate Reflection.deps.json
+C:\Users\User\Desktop\C# Memory Managment Delegate Reflection\C# Memory Managment Delegate Reflection\bin\Debug\net8.0\C# Memory Managment Delegate Reflection.runtimeconfig.json
+C:\Users\User\Desktop\C# Memory Managment Delegate Reflection\C# Memory Managment Delegate Reflection\bin\Debug\net8.0\C# Memory Managment Delegate Reflection.dll
+C:\Users\User\Desktop\C# Memory Managment Delegate Reflection\C# Memory Managment Delegate Reflection\bin\Debug\net8.0\C# Memory Managment Delegate Reflection.pdb
+C:\Users\User\Desktop\C# Memory Managment Delegate Reflection\C# Memory Managment Delegate Reflection\obj\Debug\net8.0\C# Memory Managment Delegate Reflection.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\Desktop\C# Memory Managment Delegate Reflection\C# Memory Managment Delegate Reflection\obj\Debug\net8.0\C# Memory Managment Delegate Reflection.AssemblyInfoInputs.cache
+C:\Users\User\Desktop\C# Memory Managment Delegate Reflection\C# Memory Managment Delegate Reflection\obj\Debug\net8.0\C# Memory Managment Delegate Reflection.AssemblyInfo.cs
+C:\Users\User\Desktop\C# Memory Managment Delegate Reflection\C# Memory Managment Delegate Reflection\obj\Debug\net8.0\C# Memory Managment Delegate Reflection.csproj.CoreCompileInputs.cache
+C:\Users\User\Desktop\C# Memory Managment Delegate Reflection\C# Memory Managment Delegate Reflection\obj\Debug\net8.0\C# Memory Managment Delegate Reflection.sourcelink.json
+C:\Users\User\Desktop\C# Memory Managment Delegate Reflection\C# Memory Managment Delegate Reflection\obj\Debug\net8.0\C# Memory Managment Delegate Reflection.dll
+C:\Users\User\Desktop\C# Memory Managment Delegate Reflection\C# Memory Managment Delegate Reflection\obj\Debug\net8.0\refint\C# Memory Managment Delegate Reflection.dll
+C:\Users\User\Desktop\C# Memory Managment Delegate Reflection\C# Memory Managment Delegate Reflection\obj\Debug\net8.0\C# Memory Managment Delegate Reflection.pdb
+C:\Users\User\Desktop\C# Memory Managment Delegate Reflection\C# Memory Managment Delegate Reflection\obj\Debug\net8.0\C# Memory Managment Delegate Reflection.genruntimeconfig.cache
+C:\Users\User\Desktop\C# Memory Managment Delegate Reflection\C# Memory Managment Delegate Reflection\obj\Debug\net8.0\ref\C# Memory Managment Delegate Reflection.dll
