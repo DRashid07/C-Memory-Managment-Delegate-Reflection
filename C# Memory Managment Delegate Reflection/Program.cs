@@ -1,5 +1,4 @@
 ﻿using C__Memory_Managment_Delegate_Reflection.Models;
-using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -7,21 +6,24 @@ namespace C__Memory_Managment_Delegate_Reflection
 {
     internal class Program
     {
-        static List<User> users = new List<User>();
-        static List<Pizza> pizzas = new List<Pizza>();
-        static JsonSerializerOptions jsonOptions = new()
+        static List<User> users = new();
+        static List<Pizza> pizzas = new();
+        static readonly JsonSerializerOptions jsonOptions = new()
         {
             PropertyNameCaseInsensitive = true,
             WriteIndented = true,
             Converters = { new JsonStringEnumConverter() }
         };
         
-        const string UsersFile = "Users.json";
-        const string ProductsFile = "Products.json";
+        const string UsersFile = "Data/Users.json";
+        const string ProductsFile = "Data/Products.json";
 
-        static void Main(string[] args)
+        static void Main()
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
+            
+            
+            Directory.CreateDirectory("Data");
             
             users = LoadList<User>(UsersFile);
             pizzas = LoadList<Pizza>(ProductsFile);
@@ -30,15 +32,25 @@ namespace C__Memory_Managment_Delegate_Reflection
             {
                 Console.WriteLine("\n=== Pizza Sifarişi ===");
                 Console.WriteLine("1. Login");
-                Console.WriteLine("2. Qeydiyyat (Register)");
-                Console.WriteLine("0. Çıxış (Exit)");
+                Console.WriteLine("2. Qeydiyyat");
+                Console.WriteLine("0. Çıxış");
                 Console.Write("Seçim: ");
                 string choice = Console.ReadLine();
 
-                if (choice == "1") Login();
-                else if (choice == "2") Register();
-                else if (choice == "0") break;
-                else Console.WriteLine("Yanlış seçim");
+                switch (choice)
+                {
+                    case "1":
+                        Login();
+                        break;
+                    case "2":
+                        Register();
+                        break;
+                    case "0":
+                        return;
+                    default:
+                        Console.WriteLine("Yanlış seçim");
+                        break;
+                }
             }
         }
 
@@ -60,18 +72,24 @@ namespace C__Memory_Managment_Delegate_Reflection
         {
             Console.WriteLine("\n=== Qeydiyyat ===");
             Console.Write("Ad: ");
-            string firstName = Console.ReadLine() ?? "";
+            string firstName = Console.ReadLine();
             Console.Write("Soyad: ");
-            string lastName = Console.ReadLine() ?? "";
+            string lastName = Console.ReadLine();
             
+            if (string.IsNullOrWhiteSpace(firstName) || string.IsNullOrWhiteSpace(lastName))
+            {
+                Console.WriteLine("Ad və soyad boş ola bilməz.");
+                return;
+            }
+
             string login;
             while (true)
             {
                 Console.Write("Login (3-16 simvol): ");
-                login = Console.ReadLine() ?? "";
-                if (login.Length < 3 || login.Length > 16)
+                login = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(login) || login.Length < 3 || login.Length > 16)
                 {
-                    Console.WriteLine("Login uzunluğu 3-16 olmalıdır.");
+                    Console.WriteLine("Login uzunlığı 3-16 olmalıdır.");
                     continue;
                 }
                 if (users.Any(u => u.Login.Equals(login, StringComparison.OrdinalIgnoreCase)))
@@ -86,7 +104,7 @@ namespace C__Memory_Managment_Delegate_Reflection
             while (true)
             {
                 Console.Write("Şifrə (6-16, 1 böyük, 1 kiçik, 1 rəqəm): ");
-                password = Console.ReadLine() ?? "";
+                password = Console.ReadLine();
                 if (!ValidatePassword(password))
                 {
                     Console.WriteLine("Şifrə tələblərə uyğun deyil.");
@@ -95,30 +113,29 @@ namespace C__Memory_Managment_Delegate_Reflection
                 break;
             }
 
-            try
+            var role = users.Count == 0 ? UserRole.Admin : UserRole.User;
+            
+            var newUser = new User
             {
-                var newUser = new User
-                {
-                    Id = users.Count == 0 ? 1 : users.Max(u => u.Id) + 1,
-                    FirstName = firstName,
-                    LastName = lastName,
-                    Login = login,
-                    Password = password,
-                    Role = UserRole.User
-                };
-                users.Add(newUser);
-                SaveList(UsersFile, users);
-                Console.WriteLine("Qeydiyyat uğurla bitdi.");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Xəta: {ex.Message}");
-            }
+                Id = users.Count == 0 ? 1 : users.Max(u => u.Id) + 1,
+                FirstName = firstName,
+                LastName = lastName,
+                Login = login,
+                Password = password,
+                Role = role
+            };
+            users.Add(newUser);
+            SaveList(UsersFile, users);
+            
+            if (role == UserRole.Admin)
+                Console.WriteLine("✓ Qeydiyyat uğurla bitdi. Admin səlahiyyətləri aldınız.");
+            else
+                Console.WriteLine("✓ Qeydiyyat uğurla bitdi.");
         }
 
         static bool ValidatePassword(string password)
         {
-            if (password == null || password.Length < 6 || password.Length > 16) 
+            if (string.IsNullOrWhiteSpace(password) || password.Length < 6 || password.Length > 16) 
                 return false;
             if (!password.Any(char.IsUpper)) 
                 return false;
@@ -133,9 +150,9 @@ namespace C__Memory_Managment_Delegate_Reflection
         {
             Console.WriteLine("\n=== Login ===");
             Console.Write("Login: ");
-            var login = Console.ReadLine() ?? "";
+            var login = Console.ReadLine();
             Console.Write("Şifrə: ");
-            var password = Console.ReadLine() ?? "";
+            var password = Console.ReadLine();
 
             var user = users.FirstOrDefault(u =>
                 u.Login.Equals(login, StringComparison.OrdinalIgnoreCase) &&
@@ -152,52 +169,76 @@ namespace C__Memory_Managment_Delegate_Reflection
             var cart = new Dictionary<int, int>();
 
             if (user.IsAdmin())
-                AdminMenu(user, cart);
+                AdminMenu(cart);
             else
-                UserMenu(user, cart);
+                UserMenu(cart);
         }
 
-        static void UserMenu(User user, Dictionary<int, int> cart)
+        static void UserMenu(Dictionary<int, int> cart)
         {
             while (true)
             {
                 Console.WriteLine("\n=== User Menyusu ===");
-                Console.WriteLine("1. Pizzalara bax");
-                Console.WriteLine("2. Səbət və sifariş");
-                Console.WriteLine("0. Çıxış (log out)");
+                Console.WriteLine("1. Pizzalara bax və sifariş et");
+                Console.WriteLine("2. Səbətə bax və təsdiqlə");
+                Console.WriteLine("0. Çıxış");
                 Console.Write("Seçim: ");
                 var choice = Console.ReadLine();
 
-                if (choice == "1") ProductsMenu(cart);
-                else if (choice == "2") PlaceOrder(cart);
-                else if (choice == "0") break;
-                else Console.WriteLine("Yanlış seçim.");
+                switch (choice)
+                {
+                    case "1":
+                        ShowPizzasAndOrder(cart);
+                        break;
+                    case "2":
+                        ViewCartAndCheckout(cart);
+                        break;
+                    case "0":
+                        return;
+                    default:
+                        Console.WriteLine("Yanlış seçim.");
+                        break;
+                }
             }
         }
 
-        static void AdminMenu(User user, Dictionary<int, int> cart)
+        static void AdminMenu(Dictionary<int, int> cart)
         {
             while (true)
             {
                 Console.WriteLine("\n=== Admin Menyusu ===");
-                Console.WriteLine("1. Pizzalara bax");
-                Console.WriteLine("2. Səbət və sifariş");
-                Console.WriteLine("3. Pizzalar (CRUD)");
-                Console.WriteLine("4. İstifadəçilər (CRUD)");
-                Console.WriteLine("0. Çıxış (log out)");
+                Console.WriteLine("1. Pizzalara bax və sifariş et");
+                Console.WriteLine("2. Səbətə bax və təsdiqlə");
+                Console.WriteLine("3. Pizza idarəetməsi");
+                Console.WriteLine("4. İstifadəçi idarəetməsi");
+                Console.WriteLine("0. Çıxış");
                 Console.Write("Seçim: ");
                 var choice = Console.ReadLine();
 
-                if (choice == "1") ProductsMenu(cart);
-                else if (choice == "2") PlaceOrder(cart);
-                else if (choice == "3") PizzaCrudMenu();
-                else if (choice == "4") UserCrudMenu();
-                else if (choice == "0") break;
-                else Console.WriteLine("Yanlış seçim.");
+                switch (choice)
+                {
+                    case "1":
+                        ShowPizzasAndOrder(cart);
+                        break;
+                    case "2":
+                        ViewCartAndCheckout(cart);
+                        break;
+                    case "3":
+                        ManagePizzas();
+                        break;
+                    case "4":
+                        ManageUsers();
+                        break;
+                    case "0":
+                        return;
+                    default:
+                        Console.WriteLine("Yanlış seçim.");
+                        break;
+                }
             }
         }
 
-        static void ProductsMenu(Dictionary<int, int> cart)
+        static void ShowPizzasAndOrder(Dictionary<int, int> cart)
         {
             while (true)
             {
@@ -205,16 +246,19 @@ namespace C__Memory_Managment_Delegate_Reflection
                 if (!pizzas.Any())
                 {
                     Console.WriteLine("Pizza yoxdur.");
-                    Console.WriteLine("0. Geri");
+                    Console.WriteLine("\n0. Geri");
                     if (Console.ReadLine() == "0") return;
                     continue;
                 }
 
                 foreach (var p in pizzas)
-                    Console.WriteLine($"{p.Id}. {p.Name} - {p.Price} AZN");
+                {
+                    Console.WriteLine($"\n{p.Id}. {p.Name} - {p.Price:F2} AZN");
+                    Console.WriteLine($"   İnqredientlər: {string.Join(", ", p.Ingredients)}");
+                }
 
-                Console.WriteLine("0. Geri");
-                Console.Write("Səbətə əlavə etmək üçün pizza Id daxil edin: ");
+                Console.WriteLine("\n0. Geri");
+                Console.Write("Səbətə əlavə etmək üçün pizza Id: ");
                 var input = Console.ReadLine();
 
                 if (input == "0") return;
@@ -232,14 +276,8 @@ namespace C__Memory_Managment_Delegate_Reflection
                     continue;
                 }
 
-                Console.WriteLine($"\nSeçdiyiniz pizza: {pizza.Name}");
-                Console.WriteLine("İnqredientlər:");
-                foreach (var ing in pizza.Ingredients)
-                    Console.WriteLine($"  - {ing}");
-
-                Console.Write("\nSay: ");
-                var countStr = Console.ReadLine();
-                if (!int.TryParse(countStr, out var count) || count <= 0)
+                Console.Write("Say: ");
+                if (!int.TryParse(Console.ReadLine(), out var count) || count <= 0)
                 {
                     Console.WriteLine("Yanlış say.");
                     continue;
@@ -250,15 +288,15 @@ namespace C__Memory_Managment_Delegate_Reflection
                 else
                     cart[pizza.Id] = count;
 
-                Console.WriteLine("✓ Səbətə əlavə olundu.");
+                Console.WriteLine($"✓ {pizza.Name} x{count} səbətə əlavə olundu.");
             }
         }
 
-        static void PlaceOrder(Dictionary<int, int> cart)
+        static void ViewCartAndCheckout(Dictionary<int, int> cart)
         {
             if (!cart.Any())
             {
-                Console.WriteLine("Səbət boşdur.");
+                Console.WriteLine("\nSəbət boşdur.");
                 return;
             }
 
@@ -274,38 +312,62 @@ namespace C__Memory_Managment_Delegate_Reflection
             }
 
             Console.WriteLine($"\nÜmumi məbləğ: {total:F2} AZN");
-            Console.Write("\nÇatdırılma ünvanı: ");
-            var address = Console.ReadLine();
-            Console.Write("Telefon nömrəsi: ");
-            var phone = Console.ReadLine();
-
-            Console.WriteLine("\n✓ Sifariş qəbul olundu. Təşəkkürlər!");
-            cart.Clear();
+            Console.Write("\nSifarişi təsdiq edirsiniz? (y/n): ");
+            var confirm = Console.ReadLine()?.ToLower();
+            
+            if (confirm == "y" || confirm == "yes")
+            {
+                Console.Write("Çatdırılma ünvanı: ");
+                Console.ReadLine();
+                Console.Write("Telefon nömrəsi: ");
+                Console.ReadLine();
+                
+                Console.WriteLine("\n✓ Sifariş qəbul olundu. Təşəkkürlər!");
+                cart.Clear();
+            }
+            else
+            {
+                Console.WriteLine("Sifariş ləğv edildi.");
+            }
         }
 
-        static void PizzaCrudMenu()
+        static void ManagePizzas()
         {
             while (true)
             {
-                Console.WriteLine("\n=== Pizza CRUD ===");
-                Console.WriteLine("1. Hamısına bax");
-                Console.WriteLine("2. Əlavə et");
-                Console.WriteLine("3. Düzəliş et");
-                Console.WriteLine("4. Sil");
+                Console.WriteLine("\n=== Pizza İdarəetməsi ===");
+                Console.WriteLine("1. Bütün pizzalara bax");
+                Console.WriteLine("2. Yeni pizza əlavə et");
+                Console.WriteLine("3. Pizza düzəliş et");
+                Console.WriteLine("4. Pizza sil");
                 Console.WriteLine("0. Geri");
                 Console.Write("Seçim: ");
                 var choice = Console.ReadLine();
 
-                if (choice == "1") PizzaListAll();
-                else if (choice == "2") PizzaAdd();
-                else if (choice == "3") PizzaEdit();
-                else if (choice == "4") PizzaDelete();
-                else if (choice == "0") break;
-                else Console.WriteLine("Yanlış seçim.");
+                switch (choice)
+                {
+                    case "1":
+                        ShowAllPizzas();
+                        break;
+                    case "2":
+                        AddPizza();
+                        break;
+                    case "3":
+                        EditPizza();
+                        break;
+                    case "4":
+                        DeletePizza();
+                        break;
+                    case "0":
+                        return;
+                    default:
+                        Console.WriteLine("Yanlış seçim.");
+                        break;
+                }
             }
         }
 
-        static void PizzaListAll()
+        static void ShowAllPizzas()
         {
             Console.WriteLine("\n=== Bütün Pizzalar ===");
             if (!pizzas.Any())
@@ -315,16 +377,16 @@ namespace C__Memory_Managment_Delegate_Reflection
             }
             foreach (var p in pizzas)
             {
-                Console.WriteLine($"\n{p.Id}. {p.Name} - {p.Price} AZN");
-                Console.WriteLine("   İnqredientlər: " + string.Join(", ", p.Ingredients));
+                Console.WriteLine($"\n{p.Id}. {p.Name} - {p.Price:F2} AZN");
+                Console.WriteLine($"   İnqredientlər: {string.Join(", ", p.Ingredients)}");
             }
         }
 
-        static void PizzaAdd()
+        static void AddPizza()
         {
-            Console.WriteLine("\n=== Yeni Pizza Əlavə Et ===");
+            Console.WriteLine("\n=== Yeni Pizza ===");
             Console.Write("Pizza adı: ");
-            var name = Console.ReadLine() ?? "";
+            var name = Console.ReadLine();
             if (string.IsNullOrWhiteSpace(name))
             {
                 Console.WriteLine("Ad boş ola bilməz.");
@@ -339,11 +401,11 @@ namespace C__Memory_Managment_Delegate_Reflection
             }
 
             Console.Write("İnqredientlər (vergüllə ayrılmış): ");
-            var ingStr = Console.ReadLine() ?? "";
-            var ingredients = ingStr.Split(',', StringSplitOptions.RemoveEmptyEntries)
+            var ingStr = Console.ReadLine();
+            var ingredients = ingStr?.Split(',', StringSplitOptions.RemoveEmptyEntries)
                                     .Select(x => x.Trim())
                                     .Where(x => !string.IsNullOrWhiteSpace(x))
-                                    .ToList();
+                                    .ToList() ?? new List<string>();
 
             var pizza = new Pizza
             {
@@ -357,7 +419,7 @@ namespace C__Memory_Managment_Delegate_Reflection
             Console.WriteLine("✓ Pizza əlavə olundu.");
         }
 
-        static void PizzaEdit()
+        static void EditPizza()
         {
             Console.Write("\nDüzəliş üçün pizza Id: ");
             if (!int.TryParse(Console.ReadLine(), out var id))
@@ -372,19 +434,19 @@ namespace C__Memory_Managment_Delegate_Reflection
                 return;
             }
 
-            Console.WriteLine($"Cari: {p.Name} - {p.Price} AZN");
+            Console.WriteLine($"Cari: {p.Name} - {p.Price:F2} AZN");
             
-            Console.Write($"Yeni ad (boş saxla = {p.Name}): ");
+            Console.Write($"Yeni ad (Enter = dəyişmə): ");
             var name = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(name))
                 p.Name = name;
 
-            Console.Write($"Yeni qiymət (boş saxla = {p.Price}): ");
+            Console.Write($"Yeni qiymət (Enter = dəyişmə): ");
             var priceStr = Console.ReadLine();
             if (decimal.TryParse(priceStr, out var price) && price > 0)
                 p.Price = price;
 
-            Console.Write("Yeni inqredientlər (boş saxla = eyni qalsın): ");
+            Console.Write("Yeni inqredientlər (Enter = dəyişmə): ");
             var ingStr = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(ingStr))
             {
@@ -398,7 +460,7 @@ namespace C__Memory_Managment_Delegate_Reflection
             Console.WriteLine("✓ Düzəliş saxlanıldı.");
         }
 
-        static void PizzaDelete()
+        static void DeletePizza()
         {
             Console.Write("\nSilinəcək pizza Id: ");
             if (!int.TryParse(Console.ReadLine(), out var id))
@@ -426,29 +488,43 @@ namespace C__Memory_Managment_Delegate_Reflection
             Console.WriteLine("✓ Silindi.");
         }
 
-        static void UserCrudMenu()
+        static void ManageUsers()
         {
             while (true)
             {
-                Console.WriteLine("\n=== İstifadəçi CRUD ===");
-                Console.WriteLine("1. Hamısına bax");
-                Console.WriteLine("2. Əlavə et");
-                Console.WriteLine("3. Rolunu dəyiş");
-                Console.WriteLine("4. Sil");
+                Console.WriteLine("\n=== İstifadəçi İdarəetməsi ===");
+                Console.WriteLine("1. Bütün istifadəçilərə bax");
+                Console.WriteLine("2. Yeni istifadəçi əlavə et");
+                Console.WriteLine("3. İstifadəçi rolunu dəyiş");
+                Console.WriteLine("4. İstifadəçi sil");
                 Console.WriteLine("0. Geri");
                 Console.Write("Seçim: ");
                 var choice = Console.ReadLine();
 
-                if (choice == "1") UserListAll();
-                else if (choice == "2") UserAdd();
-                else if (choice == "3") UserChangeRole();
-                else if (choice == "4") UserDelete();
-                else if (choice == "0") break;
-                else Console.WriteLine("Yanlış seçim.");
+                switch (choice)
+                {
+                    case "1":
+                        ShowAllUsers();
+                        break;
+                    case "2":
+                        AddUser();
+                        break;
+                    case "3":
+                        ChangeUserRole();
+                        break;
+                    case "4":
+                        DeleteUser();
+                        break;
+                    case "0":
+                        return;
+                    default:
+                        Console.WriteLine("Yanlış seçim.");
+                        break;
+                }
             }
         }
 
-        static void UserListAll()
+        static void ShowAllUsers()
         {
             Console.WriteLine("\n=== Bütün İstifadəçilər ===");
             if (!users.Any())
@@ -457,25 +533,31 @@ namespace C__Memory_Managment_Delegate_Reflection
                 return;
             }
             foreach (var u in users)
-                Console.WriteLine($"{u.Id}. {u.FirstName} {u.LastName} [{u.Login}] - {u.Role}");
+                Console.WriteLine($"{u.Id}. {u.FirstName} {u.LastName} [@{u.Login}] - {u.Role}");
         }
 
-        static void UserAdd()
+        static void AddUser()
         {
-            Console.WriteLine("\n=== Yeni İstifadəçi Əlavə Et ===");
+            Console.WriteLine("\n=== Yeni İstifadəçi ===");
             Console.Write("Ad: ");
-            var firstName = Console.ReadLine() ?? "";
+            var firstName = Console.ReadLine();
             Console.Write("Soyad: ");
-            var lastName = Console.ReadLine() ?? "";
+            var lastName = Console.ReadLine();
+
+            if (string.IsNullOrWhiteSpace(firstName) || string.IsNullOrWhiteSpace(lastName))
+            {
+                Console.WriteLine("Ad və soyad boş ola bilməz.");
+                return;
+            }
 
             string login;
             while (true)
             {
                 Console.Write("Login (3-16): ");
-                login = Console.ReadLine() ?? "";
-                if (login.Length < 3 || login.Length > 16)
+                login = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(login) || login.Length < 3 || login.Length > 16)
                 {
-                    Console.WriteLine("Login uzunluğu 3-16 olmalıdır.");
+                    Console.WriteLine("Login uzunlığı 3-16 olmalıdır.");
                     continue;
                 }
                 if (users.Any(u => u.Login.Equals(login, StringComparison.OrdinalIgnoreCase)))
@@ -490,7 +572,7 @@ namespace C__Memory_Managment_Delegate_Reflection
             while (true)
             {
                 Console.Write("Şifrə (6-16, 1 böyük, 1 kiçik, 1 rəqəm): ");
-                password = Console.ReadLine() ?? "";
+                password = Console.ReadLine();
                 if (!ValidatePassword(password))
                 {
                     Console.WriteLine("Şifrə tələblərə uyğun deyil.");
@@ -499,9 +581,9 @@ namespace C__Memory_Managment_Delegate_Reflection
                 break;
             }
 
-            Console.WriteLine("Rol seçin: 1-Admin, 2-User");
-            var roleStr = Console.ReadLine();
-            var role = roleStr == "1" ? UserRole.Admin : UserRole.User;
+            Console.Write("Admin rolu verək? (y/n): ");
+            var roleChoice = Console.ReadLine()?.ToLower();
+            var role = (roleChoice == "y" || roleChoice == "yes") ? UserRole.Admin : UserRole.User;
 
             var newUser = new User
             {
@@ -514,12 +596,12 @@ namespace C__Memory_Managment_Delegate_Reflection
             };
             users.Add(newUser);
             SaveList(UsersFile, users);
-            Console.WriteLine("✓ İstifadəçi əlavə olundu.");
+            Console.WriteLine($"✓ İstifadəçi {role} rolu ilə əlavə olundu.");
         }
 
-        static void UserChangeRole()
+        static void ChangeUserRole()
         {
-            Console.Write("\nRolunu dəyişmək istədiyiniz istifadəçi Id: ");
+            Console.Write("\nİstifadəçi Id: ");
             if (!int.TryParse(Console.ReadLine(), out var id))
             {
                 Console.WriteLine("Yanlış Id.");
@@ -532,14 +614,15 @@ namespace C__Memory_Managment_Delegate_Reflection
                 return;
             }
 
-            Console.WriteLine($"Hazırki rol: {u.Role}. Yeni rol seç: 1-Admin, 2-User");
-            var roleStr = Console.ReadLine();
-            u.Role = roleStr == "1" ? UserRole.Admin : UserRole.User;
+            Console.WriteLine($"Hazırki: {u.FirstName} {u.LastName} - {u.Role}");
+            Console.Write("Admin rolu verək? (y/n): ");
+            var roleChoice = Console.ReadLine()?.ToLower();
+            u.Role = (roleChoice == "y" || roleChoice == "yes") ? UserRole.Admin : UserRole.User;
             SaveList(UsersFile, users);
-            Console.WriteLine("✓ Rol dəyişdirildi.");
+            Console.WriteLine($"✓ Rol {u.Role} olaraq dəyişdirildi.");
         }
 
-        static void UserDelete()
+        static void DeleteUser()
         {
             Console.Write("\nSilinəcək istifadəçi Id: ");
             if (!int.TryParse(Console.ReadLine(), out var id))

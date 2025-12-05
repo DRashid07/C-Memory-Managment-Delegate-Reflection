@@ -6,5 +6,37 @@
     "Login": "reska",
     "Password": "Reska07",
     "Role": "User"
+  },
+  {
+    "Id": 2,
+    "FirstName": "raska",
+    "LastName": "dursun",
+    "Login": "reska07",
+    "Password": "Reska07",
+    "Role": "User"
+  },
+  {
+    "Id": 3,
+    "FirstName": "reska",
+    "LastName": "dursun",
+    "Login": "Raska",
+    "Password": "Reska07",
+    "Role": "User"
+  },
+  {
+    "Id": 4,
+    "FirstName": "Reska1",
+    "LastName": "dursun",
+    "Login": "Reska1",
+    "Password": "Raska07",
+    "Role": "User"
+  },
+  {
+    "Id": 5,
+    "FirstName": "REska",
+    "LastName": "Dursun",
+    "Login": "man",
+    "Password": "Reska07",
+    "Role": "User"
   }
 ]

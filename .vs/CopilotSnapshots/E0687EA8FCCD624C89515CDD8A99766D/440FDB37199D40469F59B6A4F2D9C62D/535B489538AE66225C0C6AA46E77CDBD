@@ -1,0 +1,34 @@
+﻿[
+  {
+    "Id": 1,
+    "Name": "Marqarita",
+    "Price": 12.50,
+    "Ingredients": [
+      "Pendir",
+      "Pomidor sousu",
+      "Reyhan"
+    ]
+  },
+  {
+    "Id": 2,
+    "Name": "Pepperoni",
+    "Price": 15.00,
+    "Ingredients": [
+      "Pendir",
+      "Pomidor sousu",
+      "Pepperoni"
+    ]
+  },
+  {
+    "Id": 3,
+    "Name": "Vegetarian",
+    "Price": 13.50,
+    "Ingredients": [
+      "Pendir",
+      "Pomidor sousu",
+      "Göbələk",
+      "Bibər",
+      "Zeytun"
+    ]
+  }
+]

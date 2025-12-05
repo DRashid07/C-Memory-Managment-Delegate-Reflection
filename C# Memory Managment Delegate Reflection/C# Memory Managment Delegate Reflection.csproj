@@ -9,8 +9,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="Data\Products.json" />
-    <Compile Include="Data\Users.json" />
+    <None Update="Data\Products.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\Users.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
