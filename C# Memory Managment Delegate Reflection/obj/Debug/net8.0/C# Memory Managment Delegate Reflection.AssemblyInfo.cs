@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("C# Memory Managment Delegate Reflection")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4d8c2e6b80379fe4724498562181cb95d6e1882c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+46acbe370b2f3a23c9e653677370dffdf1eabf24")]
 [assembly: System.Reflection.AssemblyProductAttribute("C# Memory Managment Delegate Reflection")]
 [assembly: System.Reflection.AssemblyTitleAttribute("C# Memory Managment Delegate Reflection")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

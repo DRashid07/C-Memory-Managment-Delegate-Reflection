@@ -59,5 +59,6 @@
                 return false;
             return true;
         }
+        // End of User class
     }
 }
