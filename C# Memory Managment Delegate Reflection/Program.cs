@@ -15,8 +15,8 @@ namespace C__Memory_Managment_Delegate_Reflection
             Converters = { new JsonStringEnumConverter() }
         };
         
-        const string UsersFile = "Data/Users.json";
-        const string ProductsFile = "Data/Products.json";
+        const string UsersFile = "C:\\Users\\rashided\\Desktop\\C-Memory-Managment-Delegate-Reflection\\C# Memory Managment Delegate Reflection\\Data\\Users.json";
+        const string ProductsFile = "C:\\Users\\rashided\\Desktop\\C-Memory-Managment-Delegate-Reflection\\C# Memory Managment Delegate Reflection\\Data\\Products.json";
 
         static void Main()
         {
