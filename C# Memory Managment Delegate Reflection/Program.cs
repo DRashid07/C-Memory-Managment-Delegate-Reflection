@@ -15,9 +15,8 @@ namespace C__Memory_Managment_Delegate_Reflection
             Converters = { new JsonStringEnumConverter() }
         };
         
-        const string UsersFile = "C:\\Users\\rashided\\Desktop\\C-Memory-Managment-Delegate-Reflection\\C# Memory Managment Delegate Reflection\\Data\\Users.json";
-        const string ProductsFile = "C:\\Users\\rashided\\Desktop\\C-Memory-Managment-Delegate-Reflection\\C# Memory Managment Delegate Reflection\\Data\\Products.json";
-
+        const string UsersFile = "C:\\Users\\User\\Desktop\\Code Academy\\C# Memory Managment Delegate Reflection\\C# Memory Managment Delegate Reflection\\Data\\Users.json";
+        const string ProductsFile = "C:\\Users\\User\\Desktop\\Code Academy\\C# Memory Managment Delegate Reflection\\C# Memory Managment Delegate Reflection\\Data\\Products.json";
         static void Main()
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
@@ -651,4 +650,4 @@ namespace C__Memory_Managment_Delegate_Reflection
         }
     }
 }
-...
+//...
