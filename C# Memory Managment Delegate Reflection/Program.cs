@@ -650,4 +650,4 @@ namespace C__Memory_Managment_Delegate_Reflection
         }
     }
 }
-//...Bitdi
+//...Bitdi.
